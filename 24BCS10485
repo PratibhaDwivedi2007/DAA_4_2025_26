@@ -1,0 +1,90 @@
+/*
+Recurrence Relation : T(n)=3T(n/2)+(nlogn+n)
+
+After applying master theorem a=3 b=2 k=1 p=1
+
+a>b^k
+Thus Master Theorem Case 1 is applied
+    Time= O(n^log3 with base 2)
+
+*/
+
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+
+int opcount = 0;
+using namespace std::chrono;
+
+int depth(int n)
+{
+    if (n <= 2)
+    {
+        return 1;
+    }
+    return 1 + depth(n / 2);
+}
+
+void complexRec(int n)
+{
+    opcount++;
+    opcount++;
+    if (n <= 2)
+    {
+        opcount++;
+        return;
+    }
+
+    int p = n;
+    opcount++;
+    while (p > 0)
+    {
+        opcount++;
+        vector<int> temp(n);
+        opcount++;
+        for (int i = 0; i < n; i++)
+        {
+            opcount++;
+            temp[i] = i ^ p;
+            opcount++;
+        }
+        p >>= 1;
+        opcount++;
+    }
+
+    vector<int> small(n);
+    opcount++;
+    for (int i = 0; i < n; i++)
+    {
+        opcount++;
+        small[i] = i * i;
+        opcount++;
+    }
+    opcount++;
+    if (n % 3 == 0)
+    {
+        reverse(small.begin(), small.end());
+    }
+    else
+    {
+        reverse(small.begin(), small.end());
+    }
+    opcount++;
+    opcount += n;
+    opcount += 3;
+    complexRec(n / 2);
+    complexRec(n / 2);
+    complexRec(n / 2);
+}
+
+int main()
+{
+    auto start = high_resolution_clock::now();
+    complexRec(16);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - start);
+    cout << opcount << endl;
+    int treedepth = depth(16);
+    cout << treedepth << endl;
+    cout << duration.count();
+}
