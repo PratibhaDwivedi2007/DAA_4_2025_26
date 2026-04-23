@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int arr[100];
+int hSize = 0;
+
+void heapUp(int i){
+    while(i>0 && arr[(i-1)/2] > arr[i]){
+        swap(arr[(i-1)/2], arr[i]);
+        i = (i-1)/2;
+    }
+}
+
+void insert(int val){
+    if (hSize>=100){
+        cout << "Overflow" << endl;
+        return;
+    }
+    arr[hSize++] = val;
+    heapUp(hSize-1);
+}
+
+void heapDown(int i){
+    int small = i;
+    int right = 2*i+2;
+    int left = 2*i+1;
+    if (left < hSize && arr[small] > arr[left]){
+        small = left;
+    }
+    
+    if (right < hSize && arr[small] > arr[right]){
+        small = right;
+    }
+    if(small != i){
+        swap(arr[i],arr[small]);
+        heapDown(small);
+    }
+}
+
+void delete_(int i){
+    if(hSize<=0){
+        cout << "Underflow" << endl;
+        return;
+    }
+    if(i>=hSize){
+        cout << "Index Doesn't exist" << endl;
+        return;
+    }
+    swap(arr[--hSize], arr[i]);
+    heapDown(i);
+    heapUp(i);
+}
+
+void search(int val){
+    for(int i=0; i<hSize; i++){
+        if(arr[i] == val){
+            cout << "Element found at index: " << i << endl;
+            return;
+        }
+    }
+    cout << "Element not found" << endl;
+}
+
+void display(){
+    for(int i=0; i<hSize; i++) cout << arr[i] << " ";
+    cout << endl;
+}
+int main (){
+    insert(0);
+    insert(5);
+    insert(-1);
+    insert(3);
+    display();
+    delete_(2);
+    delete_(0);
+    display();
+    search(10);
+    search(5);
+}
